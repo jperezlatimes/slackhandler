@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-An extension of Python's base logging Handler that will emit logs to Slack
-"""
-
 import re
 import json
 import requests
@@ -20,37 +16,39 @@ class SlackHandler(Handler):
         Handler.__init__(self)
 
     def format_record(self, record):
-        try:
-            # Format the message and do a splitting and merging to make it pretty
-            formatted_rec = self.format(record)
+        print "Formatting log record"
 
-            # If our error record is a full traceback,
-            # break it up for proper Slack formatting
-            formatted_rec = formatted_rec.split('Exception', 1)
-            if len(formatted_rec) > 1:
-                formatted_rec = formatted_rec[0] + "```\nException " + formatted_rec[1] + "\n```"
-            else:
-                formatted_rec = "```" + formatted_rec[0] + "```"
-            # formatted_rec = formatted_rec + "\n ```" + request.user_agent.string + "```"
+        try:
+            # Get a dict representation of the exception
+            record_dict = record.__dict__
+
+            import pprint
+            pp = pprint.PrettyPrinter(indent=4)
+            pp.pprint(record_dict)
 
             # Get the exception
             exception = 'Exception'
             if record.exc_info:
                 exception = type(record.exc_info[1]).__name__
 
+            # Format the message and do a splitting and merging to make it pretty
+            formatted_record = self.format(record)
+
             # Make the Slack msg string
-            msg = "`%s` was thrown at %s" % (
+            msg = "`%s |  %s`\n```%s\n```" % (
                 exception,
-                formatted_rec
+                ecord_dict['message'],
+                formatted_record
             )
 
             # Return the formatted slack message
-            return json.dumps({'text': msg})
+            return json.dumps({'text': msg, 'channel': 'snap-test'})
 
         except Exception:
             self.handleError(record)
 
     def emit(self, record):
+        print "WHAT"
         try:
             slack_msg = self.format_record(record)
             requests.post(self.url, data=slack_msg)
