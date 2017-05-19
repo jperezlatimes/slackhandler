@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-__init__.py
-
-Extension to Python's HTTPHandler that pipes logs to Slack
+An extension of Python's base logging Handler that will emit logs to Slack
 """
 
 import re
@@ -11,10 +9,8 @@ import json
 import requests
 from logging import Handler
 
+
 class SlackHandler(Handler):
-    """
-    An extension of Python's base logging Handler that will emit logs to Slack
-    """
     def __init__(self, webhook_url):
         # Make sure the url string begins with https://
         webhook_url = re.sub(r'http(?:s*):\/\/', '', webhook_url)
