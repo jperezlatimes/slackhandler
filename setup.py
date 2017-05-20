@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name="slackhandler",
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(),
     install_requires=(),
     author="James Perez",
     author_email="jdperez04@gmail.com",
-    description="Extends Python's base logging Handler that emits logs to Slack",
-    long_description="Extends Python's base logging Handler that emits logs to Slack via an Incoming Webhook",
+    description="Extends Python's base logging Handler to emit logs to Slack",
+    long_description="Extends Python's base logging Handler to emit logs to Slack via an Incoming Webhook",
     url="https://github.com/jperezlatimes/SlackHandler/",
     license="GNU GENERAL PUBLIC LICENSE",
     classifiers=[

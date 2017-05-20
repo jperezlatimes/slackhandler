@@ -1,4 +1,7 @@
+# Don't need the makefile in the repo
+Makefile
 test.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

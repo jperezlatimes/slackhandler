@@ -3,52 +3,44 @@
 import re
 import json
 import requests
+import traceback
 from logging import Handler
 
-
 class SlackHandler(Handler):
-    def __init__(self, webhook_url):
+    def __init__(self, webhook_url, channel=None):
         # Make sure the url string begins with https://
         webhook_url = re.sub(r'http(?:s*):\/\/', '', webhook_url)
         self.url = 'https://' + webhook_url
+        self.channel = channel
 
         # Finish spinning up the base log handler class
         Handler.__init__(self)
 
     def format_record(self, record):
-        print "Formatting log record"
+        # Get a dict representation of the exception
+        record_dict = record.__dict__
 
+        # Format the message
+        formatted_record = self.format(record)
+
+        # Chop off the traceback from the formatted record string and
+        # add it back wrapped in some nice Slack formatting
+        split_record_str = formatted_record.split('Traceback', 1)
         try:
-            # Get a dict representation of the exception
-            record_dict = record.__dict__
+            formatted_record = split_record_str[0] + "\n```\n" + traceback.format_exc() + "\n```"
+        except Exception as e:
+            pass
 
-            import pprint
-            pp = pprint.PrettyPrinter(indent=4)
-            pp.pprint(record_dict)
+        # Format the message and do a splitting and merging to make it pretty
+        slack_msg = {'text': formatted_record}
 
-            # Get the exception
-            exception = 'Exception'
-            if record.exc_info:
-                exception = type(record.exc_info[1]).__name__
+        # Return the formatted slack message
+        if self.channel:
+            slack_msg['channel'] = self.channel
 
-            # Format the message and do a splitting and merging to make it pretty
-            formatted_record = self.format(record)
-
-            # Make the Slack msg string
-            msg = "`%s |  %s`\n```%s\n```" % (
-                exception,
-                ecord_dict['message'],
-                formatted_record
-            )
-
-            # Return the formatted slack message
-            return json.dumps({'text': msg, 'channel': 'snap-test'})
-
-        except Exception:
-            self.handleError(record)
+        return json.dumps(slack_msg)
 
     def emit(self, record):
-        print "WHAT"
         try:
             slack_msg = self.format_record(record)
             requests.post(self.url, data=slack_msg)
