@@ -1,8 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
 setup(
     name="slackhandler",
-    version="0.1.1",
+    version="0.1.2",
     packages=find_packages(),
     install_requires=(),
     author="James Perez",
@@ -14,8 +16,6 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Intended Audience :: Developers',
         'Topic :: Communications :: Chat',
