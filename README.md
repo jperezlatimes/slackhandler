@@ -2,7 +2,7 @@ SlackHandler
 ===================
 ![Python versions](https://img.shields.io/badge/python-2.7-blue.svg)
 
-An extension of Python's base `Handler` class that sends log records to a Slack channel via an Incoming Webhook.
+An extension of Python's base `Handler` class that sends log records to a Slack channel via an Incoming Webhook. Written for Python 2.7, if you're using Python 3 you may want to check out [python-slack-logger](https://github.com/junhwi/python-slack-logger)
 
 Installation
 ------------
