@@ -32,13 +32,10 @@ class SlackHandler(Handler):
             return 'danger'  # Red
 
     def format_record(self, record):
-        import pprint
-        pp = pprint.PrettyPrinter(indent=4)
-
         # Default values
         exception = 'Message logged'
         logline = record.msg
-        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')  # noqa
 
         # If there is exception info,
         # get the exception name and the traceback
@@ -53,7 +50,7 @@ class SlackHandler(Handler):
             "attachments": [
                 {
                     "title": timestamp,
-                    "text": "`" + exception + "` in _" + record.pathname + "_\n```" + logline + "```",
+                    "text": "`" + exception + "` in _" + record.pathname + "_\n```" + logline + "```",  # noqa
                     "color": self.get_msg_color(record),
                     "mrkdwn_in": ["text"]
                 }
