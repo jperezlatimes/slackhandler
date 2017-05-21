@@ -35,7 +35,7 @@ class SlackHandler(Handler):
         # Default values
         exception = 'Message logged'
         logline = record.msg
-        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')  # noqa
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
         # If there is exception info,
         # get the exception name and the traceback
@@ -50,7 +50,7 @@ class SlackHandler(Handler):
             "attachments": [
                 {
                     "title": timestamp,
-                    "text": "`" + exception + "` in _" + record.pathname + "_\n```" + logline + "```",  # noqa
+                    "text": "`" + exception + "` in _" + record.pathname + "_\n```" + logline + "```",
                     "color": self.get_msg_color(record),
                     "mrkdwn_in": ["text"]
                 }
